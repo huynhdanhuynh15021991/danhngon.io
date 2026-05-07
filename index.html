@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Danh ngôn THCS</title>
+<title>Danh ngôn</title>
 
 <style>
 
@@ -111,6 +111,7 @@ body{
     margin-top:18px;
     font-size:16px;
     opacity:0.9;
+    font-weight:bold;
 
 }
 
@@ -151,24 +152,18 @@ body{
         </div>
 
         <div class="school">
-            <h2>TRƯỜNG THCS</h2>
+            <h2>TRƯỜNG THCS TÂN HƯNG TÂY</h2>
             <p>Danh ngôn học đường</p>
         </div>
 
     </div>
 
     <div class="content">
-
-        <div class="icon">❝</div>
-
         <div class="quote" id="quote">
             Đang tải dữ liệu...
         </div>
-
         <div class="author" id="author"></div>
-
     </div>
-
     <div class="footer">
         🌟 Mỗi ngày một câu hay - Mỗi ngày một điều tốt 🌟
     </div>
@@ -196,7 +191,7 @@ async function loadData(){
 
         showQuote();
 
-        setInterval(showQuote,5000);
+        setInterval(showQuote,30000);
 
     }catch(error){
 
