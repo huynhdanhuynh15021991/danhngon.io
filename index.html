@@ -148,55 +148,54 @@ body{
 
 <script>
 
-//==============================
-// LINK GOOGLE SHEET JSON
-//==============================
-
-// THAY ID SHEET CỦA BẠN
 const sheetID = "1djNn7xGPNbWtsFqMEqApOpqFmmnzBXIn";
-
-// Tên sheet
 const sheetName = "Sheet1";
 
-// URL JSON
-const url = `https://opensheet.elk.sh/${sheetID}/${sheetName}`;
+const url =
+`https://opensheet.elk.sh/${sheetID}/${sheetName}?t=${Date.now()}`;
 
 let quotes = [];
 let index = 0;
-
-//==============================
-// LOAD DATA
-//==============================
 
 async function loadQuotes(){
 
     try{
 
         const response = await fetch(url);
-        const data = await response.json();
 
-        quotes = data;
+        if(!response.ok){
+            throw new Error("Lỗi tải dữ liệu");
+        }
 
-        showQuote();
+        quotes = await response.json();
 
-        setInterval(showQuote,5000);
+        console.log(quotes);
+
+        if(quotes.length > 0){
+
+            showQuote();
+
+            setInterval(showQuote,5000);
+
+        }else{
+
+            document.getElementById("quote").innerHTML =
+            "Google Sheet chưa có dữ liệu";
+
+        }
 
     }catch(error){
 
+        console.error(error);
+
         document.getElementById("quote").innerHTML =
-        "Không tải được dữ liệu danh ngôn";
+        "Không thể kết nối Google Sheet";
 
     }
 
 }
 
-//==============================
-// HIỂN THỊ
-//==============================
-
 function showQuote(){
-
-    if(quotes.length === 0) return;
 
     const quote = document.getElementById("quote");
     const author = document.getElementById("author");
@@ -217,8 +216,11 @@ function showQuote(){
         }
 
     },300);
+
 }
+
 loadQuotes();
+
 </script>
 </body>
 </html>
