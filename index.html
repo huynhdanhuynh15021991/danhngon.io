@@ -241,6 +241,8 @@ async function loadData(){
 
 }
 
+let lastIndex = -1;
+
 function showQuote(){
 
     if(quotes.length === 0) return;
@@ -251,23 +253,28 @@ function showQuote(){
     const author =
     document.getElementById("author");
 
+    let randomIndex;
+
+    do{
+
+        randomIndex =
+        Math.floor(Math.random() * quotes.length);
+
+    }while(randomIndex === lastIndex);
+
+    lastIndex = randomIndex;
+
     quote.style.opacity = 0;
 
     setTimeout(()=>{
 
         quote.innerHTML =
-        quotes[index].text;
+        quotes[randomIndex].text;
 
         author.innerHTML =
-        "— " + quotes[index].author + " —";
+        "— " + quotes[randomIndex].author + " —";
 
         quote.style.opacity = 1;
-
-        index++;
-
-        if(index >= quotes.length){
-            index = 0;
-        }
 
     },300);
 
