@@ -2,9 +2,9 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1100">
 
-<title>Danh ngôn</title>
+<title>Danh Ngôn THCS TÂN HƯNG TÂY</title>
 
 <style>
 
@@ -15,56 +15,57 @@
 }
 
 body{
-    font-family:Arial,sans-serif;
     background:transparent;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
 }
 
-.widget{
+.banner{
 
-    width:100%;
-    max-width:1000px;
-    margin:auto;
-
-    border-radius:18px;
-    overflow:hidden;
+    width:1100px;
+    height:150px;
 
     background:
-    linear-gradient(135deg,#0061ff,#60efff);
+    linear-gradient(135deg,#005bea,#00c6fb);
 
-    color:white;
+    border-radius:18px;
 
-    box-shadow:
-    0 10px 25px rgba(0,0,0,0.2);
-
-}
-
-.header{
-
-    padding:15px 20px;
+    overflow:hidden;
 
     display:flex;
     align-items:center;
-    gap:15px;
 
-    background:rgba(255,255,255,0.12);
+    padding:15px 25px;
+
+    color:white;
+
+    position:relative;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,0.2);
 
 }
 
+/* Logo */
+
 .logo{
 
-    width:60px;
-    height:60px;
+    width:95px;
+    height:95px;
 
     border-radius:50%;
+
     background:white;
 
+    padding:5px;
+
     overflow:hidden;
+
+    flex-shrink:0;
 
     display:flex;
     justify-content:center;
     align-items:center;
-
-    padding:4px;
 
 }
 
@@ -76,74 +77,91 @@ body{
 
 }
 
-.school h2{
-    font-size:22px;
-}
-
-.school p{
-    font-size:13px;
-    opacity:0.9;
-}
+/* Nội dung */
 
 .content{
 
-    padding:40px 25px;
-    text-align:center;
-    position:relative;
+    margin-left:22px;
+
+    flex:1;
+
+    overflow:hidden;
 
 }
 
-.icon{
+.school{
 
-    font-size:60px;
-    opacity:0.15;
+    font-size:26px;
+    font-weight:bold;
 
-    position:absolute;
-    top:10px;
-    left:20px;
+    margin-bottom:6px;
+
+    letter-spacing:1px;
 
 }
 
 .quote{
 
-    font-size:28px;
-    line-height:1.6;
-    font-weight:bold;
+    font-size:22px;
 
-    min-height:120px;
+    white-space:nowrap;
 
-    transition:0.4s;
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    animation:fade 1s;
 
 }
 
 .author{
 
-    margin-top:18px;
-    font-size:16px;
+    margin-top:8px;
+
+    font-size:14px;
+
     opacity:0.9;
-    font-weight:bold;
+
+}
+
+/* icon */
+
+.icon{
+
+    position:absolute;
+
+    right:20px;
+    top:10px;
+
+    font-size:90px;
+
+    opacity:0.12;
 
 }
 
 .footer{
 
-    text-align:center;
-    padding:10px;
+    position:absolute;
 
-    background:rgba(0,0,0,0.15);
+    bottom:8px;
+    right:20px;
 
-    font-size:14px;
+    font-size:12px;
+
+    opacity:0.8;
 
 }
 
-@media(max-width:768px){
+@keyframes fade{
 
-    .quote{
-        font-size:20px;
+    from{
+        opacity:0;
+        transform:translateY(8px);
     }
 
-    .school h2{
-        font-size:18px;
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
 
 }
@@ -153,38 +171,46 @@ body{
 
 <body>
 
-<div class="widget">
+<div class="banner">
 
-    <div class="header">
-
-       <div class="logo">
-    <img src="LOGOTHCS.png" alt="Logo trường THCS TÂN HƯNG TÂY">
-</div>
-
-        <div class="school">
-            <h2>TRƯỜNG THCS TÂN HƯNG TÂY</h2>
-            <p>Danh ngôn học đường</p>
-        </div>
-
+    <!-- Logo -->
+    <div class="logo">
+        <img src="LOGOTHCS.png" alt="Logo Trường THCS Tân Hưng Tây">
     </div>
 
+    <!-- Nội dung -->
     <div class="content">
+
+        <div class="school">
+            TRƯỜNG THCS TÂN HƯNG TÂY
+        </div>
+
         <div class="quote" id="quote">
             Đang tải dữ liệu...
         </div>
+
         <div class="author" id="author"></div>
+
     </div>
+
+    <div class="icon">❝</div>
+
     <div class="footer">
-        🌟 Mỗi ngày một câu hay - Mỗi ngày một điều tốt 🌟
+        🌟 Mỗi ngày một câu hay - Mỗi ngày một điều tốt
     </div>
 
 </div>
 
 <script>
 
+//===========================
 // URL APPS SCRIPT
+//===========================
+
 const apiURL =
 "https://script.google.com/macros/s/AKfycbzNoydSBpbWkhmw_XJrV2CPbrVVaQHkMdOmQeXi1_bSA3DRATzYQnmHNc-g_tvi09sAPg/exec";
+
+//===========================
 
 let quotes = [];
 let index = 0;
@@ -208,8 +234,6 @@ async function loadData(){
         document.getElementById("quote")
         .innerHTML =
         "Không tải được dữ liệu";
-
-        console.log(error);
 
     }
 
