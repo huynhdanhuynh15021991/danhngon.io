@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Danh ngôn học đường</title>
+<title>Danh ngôn THCS</title>
 
 <style>
 
@@ -17,95 +17,122 @@
 body{
     font-family:Arial,sans-serif;
     background:transparent;
-    overflow:hidden;
 }
 
-.quote-widget{
+.widget{
+
     width:100%;
     max-width:1000px;
     margin:auto;
+
     border-radius:18px;
     overflow:hidden;
-    background:linear-gradient(135deg,#0061ff,#60efff);
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+
+    background:
+    linear-gradient(135deg,#0061ff,#60efff);
+
     color:white;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.2);
+
 }
 
 .header{
+
+    padding:15px 20px;
+
     display:flex;
     align-items:center;
     gap:15px;
-    padding:15px 20px;
+
     background:rgba(255,255,255,0.12);
-    backdrop-filter:blur(5px);
+
 }
 
-.header img{
+.logo{
+
     width:55px;
     height:55px;
+
     border-radius:50%;
     background:white;
-    padding:5px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:28px;
+
 }
 
-.school-info h2{
+.school h2{
     font-size:22px;
 }
 
-.school-info p{
+.school p{
     font-size:13px;
     opacity:0.9;
 }
 
-.quote-content{
+.content{
+
     padding:40px 25px;
     text-align:center;
     position:relative;
+
 }
 
-.quote-icon{
+.icon{
+
     font-size:60px;
     opacity:0.15;
+
     position:absolute;
     top:10px;
     left:20px;
+
 }
 
-.quote-text{
+.quote{
+
     font-size:28px;
     line-height:1.6;
     font-weight:bold;
+
     min-height:120px;
-    transition:0.5s;
+
+    transition:0.4s;
+
 }
 
-.quote-author{
+.author{
+
     margin-top:18px;
     font-size:16px;
     opacity:0.9;
+
 }
 
 .footer{
-    padding:10px;
+
     text-align:center;
+    padding:10px;
+
     background:rgba(0,0,0,0.15);
+
     font-size:14px;
+
 }
 
 @media(max-width:768px){
 
-    .quote-text{
+    .quote{
         font-size:20px;
-        min-height:140px;
     }
 
-    .school-info h2{
+    .school h2{
         font-size:18px;
-    }
-
-    .header img{
-        width:45px;
-        height:45px;
     }
 
 }
@@ -115,28 +142,30 @@ body{
 
 <body>
 
-<div class="quote-widget">
+<div class="widget">
 
     <div class="header">
 
-        <img src="https://cdn-icons-png.flaticon.com/512/2436/2436874.png">
+        <div class="logo">
+            📘
+        </div>
 
-        <div class="school-info">
+        <div class="school">
             <h2>TRƯỜNG THCS</h2>
-            <p>Danh ngôn - Tục ngữ học đường</p>
+            <p>Danh ngôn học đường</p>
         </div>
 
     </div>
 
-    <div class="quote-content">
+    <div class="content">
 
-        <div class="quote-icon">❝</div>
+        <div class="icon">❝</div>
 
-        <div class="quote-text" id="quote">
+        <div class="quote" id="quote">
             Đang tải dữ liệu...
         </div>
 
-        <div class="quote-author" id="author"></div>
+        <div class="author" id="author"></div>
 
     </div>
 
@@ -148,48 +177,34 @@ body{
 
 <script>
 
-const sheetID = "1SfvCMSecgHLzM2iosMye-XNP2mUZkNpmfYlBAkXavcY";
-const sheetName = "Sheet1";
-
-const url =
-`https://opensheet.elk.sh/${sheetID}/${sheetName}?t=${Date.now()}`;
+// URL APPS SCRIPT
+const apiURL =
+"https://script.google.com/macros/s/AKfycbzNoydSBpbWkhmw_XJrV2CPbrVVaQHkMdOmQeXi1_bSA3DRATzYQnmHNc-g_tvi09sAPg/exec";
 
 let quotes = [];
 let index = 0;
 
-async function loadQuotes(){
+async function loadData(){
 
     try{
 
-        const response = await fetch(url);
+        const response =
+        await fetch(apiURL);
 
-        if(!response.ok){
-            throw new Error("Lỗi tải dữ liệu");
-        }
+        quotes =
+        await response.json();
 
-        quotes = await response.json();
+        showQuote();
 
-        console.log(quotes);
-
-        if(quotes.length > 0){
-
-            showQuote();
-
-            setInterval(showQuote,5000);
-
-        }else{
-
-            document.getElementById("quote").innerHTML =
-            "Google Sheet chưa có dữ liệu";
-
-        }
+        setInterval(showQuote,5000);
 
     }catch(error){
 
-        console.error(error);
+        document.getElementById("quote")
+        .innerHTML =
+        "Không tải được dữ liệu";
 
-        document.getElementById("quote").innerHTML =
-        "Không thể kết nối Google Sheet";
+        console.log(error);
 
     }
 
@@ -197,15 +212,23 @@ async function loadQuotes(){
 
 function showQuote(){
 
-    const quote = document.getElementById("quote");
-    const author = document.getElementById("author");
+    if(quotes.length === 0) return;
+
+    const quote =
+    document.getElementById("quote");
+
+    const author =
+    document.getElementById("author");
 
     quote.style.opacity = 0;
 
     setTimeout(()=>{
 
-        quote.innerHTML = quotes[index].text;
-        author.innerHTML = "— " + quotes[index].author;
+        quote.innerHTML =
+        quotes[index].text;
+
+        author.innerHTML =
+        "— " + quotes[index].author;
 
         quote.style.opacity = 1;
 
@@ -219,8 +242,9 @@ function showQuote(){
 
 }
 
-loadQuotes();
+loadData();
 
 </script>
+
 </body>
 </html>
