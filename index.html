@@ -4,104 +4,221 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Danh ngôn học đường</title>
+
 <style>
-body{
+
+*{
     margin:0;
-    font-family:Arial, sans-serif;
-    background:transparent;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.quote-box{
+body{
+    font-family:Arial,sans-serif;
+    background:transparent;
+    overflow:hidden;
+}
+
+.quote-widget{
     width:100%;
-    max-width:700px;
+    max-width:1000px;
     margin:auto;
-    padding:20px;
-    border-radius:16px;
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    border-radius:18px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#0061ff,#60efff);
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
     color:white;
-    box-sizing:border-box;
-    box-shadow:0 5px 15px rgba(0,0,0,0.25);
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px 20px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(5px);
+}
+
+.header img{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:white;
+    padding:5px;
+}
+
+.school-info h2{
+    font-size:22px;
+}
+
+.school-info p{
+    font-size:13px;
+    opacity:0.9;
+}
+
+.quote-content{
+    padding:40px 25px;
     text-align:center;
+    position:relative;
 }
 
 .quote-icon{
-    font-size:40px;
-    opacity:0.4;
+    font-size:60px;
+    opacity:0.15;
+    position:absolute;
+    top:10px;
+    left:20px;
 }
 
 .quote-text{
-    font-size:22px;
+    font-size:28px;
     line-height:1.6;
-    margin:15px 0;
-    min-height:80px;
-    transition:0.4s;
+    font-weight:bold;
+    min-height:120px;
+    transition:0.5s;
 }
 
 .quote-author{
-    font-size:15px;
-    opacity:0.8;
+    margin-top:18px;
+    font-size:16px;
+    opacity:0.9;
+}
+
+.footer{
+    padding:10px;
+    text-align:center;
+    background:rgba(0,0,0,0.15);
+    font-size:14px;
 }
 
 @media(max-width:768px){
+
     .quote-text{
+        font-size:20px;
+        min-height:140px;
+    }
+
+    .school-info h2{
         font-size:18px;
     }
+
+    .header img{
+        width:45px;
+        height:45px;
+    }
+
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="quote-box">
-    <div class="quote-icon">❝</div>
-    <div class="quote-text" id="quote"></div>
-    <div class="quote-author" id="author"></div>
+<div class="quote-widget">
+
+    <div class="header">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/2436/2436874.png">
+
+        <div class="school-info">
+            <h2>TRƯỜNG THCS</h2>
+            <p>Danh ngôn - Tục ngữ học đường</p>
+        </div>
+
+    </div>
+
+    <div class="quote-content">
+
+        <div class="quote-icon">❝</div>
+
+        <div class="quote-text" id="quote">
+            Đang tải dữ liệu...
+        </div>
+
+        <div class="quote-author" id="author"></div>
+
+    </div>
+
+    <div class="footer">
+        🌟 Mỗi ngày một câu hay - Mỗi ngày một điều tốt 🌟
+    </div>
+
 </div>
 
 <script>
-const quotes = [
-{
-text:"Có công mài sắt, có ngày nên kim.",
-author:"Tục ngữ Việt Nam"
-},
-{
-text:"Học ăn, học nói, học gói, học mở.",
-author:"Tục ngữ Việt Nam"
-},
-{
-text:"Thất bại là mẹ thành công.",
-author:"Danh ngôn"
-},
-{
-text:"Tri thức là sức mạnh.",
-author:"Francis Bacon"
-},
-{
-text:"Không gì là không thể với người luôn cố gắng.",
-author:"Alexander Đại đế"
-},
-{
-text:"Đi một ngày đàng, học một sàng khôn.",
-author:"Tục ngữ Việt Nam"
-}
-];
 
+//==============================
+// LINK GOOGLE SHEET JSON
+//==============================
+
+// THAY ID SHEET CỦA BẠN
+const sheetID = "1djNn7xGPNbWtsFqMEqApOpqFmmnzBXIn";
+
+// Tên sheet
+const sheetName = "Sheet1";
+
+// URL JSON
+const url = `https://opensheet.elk.sh/${sheetID}/${sheetName}`;
+
+let quotes = [];
 let index = 0;
 
-function showQuote(){
-    document.getElementById("quote").innerHTML = quotes[index].text;
-    document.getElementById("author").innerHTML = "— " + quotes[index].author;
+//==============================
+// LOAD DATA
+//==============================
 
-    index++;
-    if(index >= quotes.length){
-        index = 0;
+async function loadQuotes(){
+
+    try{
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        quotes = data;
+
+        showQuote();
+
+        setInterval(showQuote,5000);
+
+    }catch(error){
+
+        document.getElementById("quote").innerHTML =
+        "Không tải được dữ liệu danh ngôn";
+
     }
+
 }
 
-showQuote();
+//==============================
+// HIỂN THỊ
+//==============================
 
-setInterval(showQuote, 5000);
+function showQuote(){
+
+    if(quotes.length === 0) return;
+
+    const quote = document.getElementById("quote");
+    const author = document.getElementById("author");
+
+    quote.style.opacity = 0;
+
+    setTimeout(()=>{
+
+        quote.innerHTML = quotes[index].text;
+        author.innerHTML = "— " + quotes[index].author;
+
+        quote.style.opacity = 1;
+
+        index++;
+
+        if(index >= quotes.length){
+            index = 0;
+        }
+
+    },300);
+}
+loadQuotes();
 </script>
-
 </body>
 </html>
